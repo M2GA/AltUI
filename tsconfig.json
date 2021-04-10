@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "pretty": true,
+    "outDir": "build/",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "removeComments": true,
+  },
+  "files": [
+    "AltUI.ts",
+    "AltLog.ts",
+    "AltEventsEmiter.ts"
+  ],
+  "excluse": ["node_modules"]
+}
