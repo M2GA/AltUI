@@ -71,3 +71,5 @@ export var AltUI;
     AltUI.Notify = Notify;
 })(AltUI || (AltUI = {}));
 log('AltLUI Initialized (Menu [submenu], Item, Notify)');
+
+// by Florian et M2GA //
