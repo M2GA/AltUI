@@ -14,9 +14,9 @@ export  namespace AltUI {
 
   export class Menu {
 
-    _title: string
-    _items: Array<Item>
-    _submenu?: Array<subMenu>
+    private _title: string
+    private _items: Array<Item>
+    private _submenu?: Array<subMenu>
     constructor (options: menu){
       options.title ? this._title = options.title : (debug("Missing title Menu"), this._title = "ALtUI")
       options.items ? this._items = options.items : error("Missing Item in Menu")
@@ -38,9 +38,10 @@ export  namespace AltUI {
       log(this._title + " menu is close")
     }
 
-    item(title:string) : void {
-      let item
+    item(title: string): Item {
+      let item: Item
       for (const i in this._items) this._items[i].data().title == title ? item = this._items[i] : null
+      item.dataa()
       return item
     }
 
@@ -55,12 +56,19 @@ export  namespace AltUI {
 
   export class subMenu {
 
-    _title: string
-    _items: Array<Item>
+    private _title: string
+    private _items: Array<Item>
     constructor(options: submenu) {
       this._title = options.title || "AltUI"
       this._items = options.items
     }
+  }
+
+  interface item {
+    title: string
+    type?: string
+    description?: string
+    navigation?: string
   }
 
   enum itemType {
@@ -69,19 +77,12 @@ export  namespace AltUI {
     checkbox = "checkbox"
   }
 
-  interface item {
-    title: string,
-    type?: string,
-    description?: string,
-    navigation?: string,
-  }
-
   export class Item extends AltEventsEmitter {
 
-    _title: string
-    _type: string
-    _description: string
-    _navigation: string
+    private _title: string
+    private _type: string
+    private _description: string
+    private _navigation: string
 
     constructor(options: item) {
       super()
@@ -99,9 +100,11 @@ export  namespace AltUI {
     }
 
     data() {
-      let data = {title: this._title, type: this._type, desc: this._description, nav: this._navigation}
-      this.emit(itemType.data, data)
-      return data
+      return {title: this._title, type: this._type, desc: this._description, nav: this._navigation}
+    }
+
+    dataa() {
+      this.emit(itemType.data, {title: this._title, type: this._type, desc: this._description, nav: this._navigation})
     }
       // log(this._title + ", " + this._type + ", " + this._description + ", " + this._navigation)
       // switch (type) {

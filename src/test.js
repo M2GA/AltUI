@@ -26,6 +26,9 @@ let carshop = new AltUI.Menu({
 })
 
 carshop.open()
+
 carshop.item("plop").on("data", (e) => {
-  debug(e)
-})
+  debug(JSON.stringify(e))
+});
+
+carshop.item("plop").init()

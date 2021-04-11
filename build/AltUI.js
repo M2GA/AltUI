@@ -25,6 +25,7 @@ export var AltUI;
             let item;
             for (const i in this._items)
                 this._items[i].data().title == title ? item = this._items[i] : null;
+            item.dataa();
             return item;
         }
     }
@@ -56,9 +57,10 @@ export var AltUI;
             this.on(itemType.data, () => { });
         }
         data() {
-            let data = { title: this._title, type: this._type, desc: this._description, nav: this._navigation };
-            this.emit(itemType.data, data);
-            return data;
+            return { title: this._title, type: this._type, desc: this._description, nav: this._navigation };
+        }
+        dataa() {
+            this.emit(itemType.data, { title: this._title, type: this._type, desc: this._description, nav: this._navigation });
         }
     }
     AltUI.Item = Item;
