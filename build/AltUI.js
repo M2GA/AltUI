@@ -96,3 +96,5 @@ export var AltUI;
     }
 })(AltUI || (AltUI = {}));
 log('AltLUI Initialized (Menu [submenu], Item, Notify)');
+
+// by Florian et M2GA //
