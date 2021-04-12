@@ -1,3 +1,3 @@
 # AltUI
 
-Fake RageUI
+Framework Menu, for FiveM & AltV
