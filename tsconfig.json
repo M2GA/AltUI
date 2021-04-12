@@ -16,7 +16,7 @@
   ],
   "excluse": ["node_modules"],
   "typedocOptions": {
-    "entryPoints": ["AltUI.ts"],
+    "entryPoints": ["AltUI.ts", "AltLog.ts", "AltEventsEmiter.ts"],
     "out": "docs"
   }
 }

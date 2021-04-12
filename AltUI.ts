@@ -3,6 +3,7 @@ import { AltEventsEmitter } from "./AltEventsEmiter.js";
 const {log, debug, error} = new AltLog
 
 export  namespace AltUI {
+
   interface menu {
     title?: string,
     items: Array<Item>,
@@ -12,56 +13,11 @@ export  namespace AltUI {
     error?: (error: string) => void
   }
 
-  export class Menu {
-
-    private _title: string
-    private _items: Array<Item>
-    private _submenu?: Array<subMenu>
-    constructor (options: menu){
-      options.title ? this._title = options.title : (debug("Missing title Menu"), this._title = "ALtUI")
-      options.items ? this._items = options.items : error("Missing Item in Menu")
-      options.items ? this._submenu = options.submenus : null
-      this.init()
-    }
-
-    private init() {
-      log(this._title + " menu is init for")
-      log("Number of Item(s) " + this._items.length + " In " + this._title + " Menu")
-      return this._title
-    }
-
-    open() {
-      return log(this._title + " menu is open")
-    }
-
-    close() {
-      log(this._title + " menu is close")
-    }
-
-    item(title: string): Item {
-      let item: Item
-      for (const i in this._items) this._items[i].data().title == title ? item = this._items[i] : null
-      item.dataa()
-      return item
-    }
-
-  }
-
   interface submenu {
     title?: string
-    items: Array<Item>,
+    items?: Array<Item>,
     success?: (success: boolean) => void,
     error?: (error: string) => void
-  }
-
-  export class subMenu {
-
-    private _title: string
-    private _items: Array<Item>
-    constructor(options: submenu) {
-      this._title = options.title || "AltUI"
-      this._items = options.items
-    }
   }
 
   interface item {
@@ -71,13 +27,66 @@ export  namespace AltUI {
     navigation?: string
   }
 
-  enum itemType {
-    data = "data",
-    button = "button",
-    checkbox = "checkbox"
+  enum e_Menu {
+    open = "open"
   }
 
-  export class Item extends AltEventsEmitter {
+  enum e_Item {
+    data = "data",
+    click = "click",
+    isCheck = "isCheck",
+    change = "change"
+  }
+
+  export class Menu extends AltEventsEmitter {
+
+    private _title: string
+    private _items: Array<Item>
+    private _submenu?: Array<subMenu>
+
+    constructor (options: menu){
+      super()
+      options.title ? this._title = options.title : (debug("Missing title Menu"), this._title = "ALtUI")
+      this.init()
+    }
+
+    protected init(): void {
+      log('"' + this._title + '"' + " AltUI:Menu is init")
+    }
+
+    open(): void {
+      log('Method open')
+    }
+
+    close() {
+      log(this._title + " menu is close")
+    }
+
+    submenu(options: submenu): subMenu {
+      return new subMenu(options)
+    }
+
+    item(options: item): Item {
+      let item = new Item(options)
+      item.emited()
+      return item
+    }
+
+  }
+
+  class subMenu {
+
+    private _title: string
+    private _items: Array<Item>
+
+    constructor(options: submenu) {
+      this._title = options.title || "AltUI"
+      this._items = options.items
+    }
+
+  }
+
+  class Item extends AltEventsEmitter {
 
     private _title: string
     private _type: string
@@ -87,64 +96,45 @@ export  namespace AltUI {
     constructor(options: item) {
       super()
       options.title ? this._title = options.title : (error("Title is missed for Item"), this._title = "AltUI")
-      options.type == "button" || options.type == "checkbox" || options.type == "input" ? this._type = options.type : (error("Type is missed or Invalid for Item"), this._type = null)
-      options.description ? this._type = options.description : (debug("Description is missed for Item"), this._description = null)
-      options.navigation ? this._navigation = options.navigation : (debug("Navigation is missed for Item"), this._navigation = null)
+      options.type == "button" || options.type == "checkbox" || options.type == "input" ? this._type = options.type : (error("Type is missed or Invalid for Item " + '"' + this._title + '"' + " AltUI:item"), this._type = null)
+      options.description ? this._type = options.description : (debug("Description is missed for Item " + '"' + this._title + '"' + " AltUI:Item"), this._description = null)
+      options.navigation ? this._navigation = options.navigation : (debug("Navigation is missed for Item " + '"' + this._title + '"' + " AltUI:Item"), this._navigation = null)
       this.init()
     }
 
-    _item
     init() {
-      this.on(itemType.button || itemType.checkbox, () => {})
-      this.on(itemType.data, () => {})
+      this.on(e_Item.data, () => {})
+      this.on(e_Item.click, () => {})
+      log("Item " + '"' + this._title + '"' + " is init")
+    }
+
+    async emited() {
+      await Wait(1)
+      this.emit(e_Item.data, {title: this._title, type: this._type,  desc: this._description, nav: this._navigation})
+      this.emit(this._type == "button" ? e_Item.click: this._type == "checkbox" ? e_Item.isCheck: this._type == "input" ? e_Item.change: (null && error('Miss type for this Item' + this._title)), {}) //todo Add eventlsitener pour le click du bouton
     }
 
     data() {
       return {title: this._title, type: this._type, desc: this._description, nav: this._navigation}
     }
 
-    dataa() {
-      this.emit(itemType.data, {title: this._title, type: this._type, desc: this._description, nav: this._navigation})
+    click() {
+      
     }
-      // log(this._title + ", " + this._type + ", " + this._description + ", " + this._navigation)
-      // switch (type) {
-      //   case "click":
-      //     this._type == "button" ? this.click() : error("The type does not match your item")
-      //     break
-      //   case "checked":
-      //     this._type == "checkbox" ? this.checked() : error(" The type does not match your item")
-      //     break
-      //   case "change":
-      //     this._type == "input" ? this.change() : error("The type does not match your item")
-      //     break
-      //   default:
-      //     break
-      // }
-
-    // click() {
-    //   document.getElementById(this._title).addEventListener("click", (e) => {
-    //     log('Clikc2')
-    //   })
-    //   document.getElementById(this._title).addEventListener("keypress", (e) => {
-    //     e.key == "Enter" ? log("Enter pressed") : error("Error not pressed")
-    //   })
-    // }
-
-    // checked() {
-    // }
-
-    // change() {
-    // }
   }
 
-  interface notify {
-
-  }
+  interface notify { }
 
   export class Notify {
-    constructor () {
+    constructor () { }
+  }
 
-    }
+  async function Wait(time: number): Promise<void> {
+    return new Promise(function (success) {
+        setTimeout(() => {
+            success();
+        }, time);
+    });
   }
 
 }
