@@ -1,22 +1,41 @@
 {
   "compilerOptions": {
+    "outDir": "AltUI/",
+    "module": "es6",
     "target": "es6",
-    "pretty": true,
-    "outDir": "build/",
-    "module": "es2015",
     "moduleResolution": "node",
-    "removeComments": true,
-    "jsx": "react",
     "allowJs": true
   },
   "files": [
-    "AltUI.ts",
-    "AltLog.ts",
-    "AltEventsEmiter.ts"
+    "AltUI/AltUI.ts",
+
+    // Components
+    "AltUI/components/item.ts",
+    "AltUI/components/button.ts",
+    "AltUI/components/subMenu.ts",
+
+    // Modules
+    "AltUI/module/AltEvent.ts",
+    "AltUI/module/Altlog.ts",
+    "AltUI/module/Uid4.ts",
+    "AltUI/module/Wait.ts",
   ],
   "excluse": ["node_modules"],
   "typedocOptions": {
-    "entryPoints": ["AltUI.ts", "AltLog.ts", "AltEventsEmiter.ts"],
+    "entryPoints": [
+      "AltUI/AltUI.ts",
+
+      // Components
+      "AltUI/components/item.ts",
+      "AltUI/components/button.ts",
+      "AltUI/components/subMenu.ts",
+
+      // Modules
+      "AltUI/module/AltEvent.ts",
+      "AltUI/module/Altlog.ts",
+      "AltUI/module/Uid4.ts",
+      "AltUI/module/Wait.ts",
+    ],
     "out": "docs"
   }
 }
